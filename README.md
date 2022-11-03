@@ -99,11 +99,9 @@ $$\begin{cases}
 
 在代码实现功能的划分上，我们小组参考了主流机器学习框架的结构。包含数据存储的矩阵类、层与网络类、损失函数类、激活函数类，以及将反向传播过程抽象出来的优化器类。
 
-|      |                                                              |
-| ---- | ------------------------------------------------------------ |
-|      | ![img](file:///C:\Users\13357\AppData\Local\Temp\ksohtml9868\wps46.jpg) |
+![img](https://github.com/Kevin-Xu666/BP-Iris-/blob/main/IMG/%E4%BB%A3%E7%A0%81%E7%BB%84%E6%88%90%E7%BB%93%E6%9E%84.jpg)
 
-​                                                                  图 1：代码组成结构
+                                                 图 1：代码组成结构
 
 出于多态性考虑，优化器、损失函数与激活函数都定义了基类，供起具体效用的派生类公开继承。在需要使用相关类的函数形参都接受基类引用，传入派生类可以实现不同功能，以实现多态性。
 
@@ -123,9 +121,9 @@ $$\begin{cases}
 
 在Linear.h 和Linear.cpp 文件定义了 Linear 类及其方法。类声明如下。
 
-![img](file:///C:\Users\13357\AppData\Local\Temp\ksohtml9868\wps47.png)
+![img](https://github.com/Kevin-Xu666/BP-Iris-/blob/main/IMG/Linear%E7%B1%BB%E7%9A%84%E5%A3%B0%E6%98%8E.png)
 
-​                                                   代码 1：Linear 类的声明
+                                         代码 1：Linear 类的声明
 
 成员包括：权重矩阵、偏置向量、激活向量。激活的存储是为了方便反向传播的计算。
 
@@ -141,9 +139,9 @@ $W$ ~ $U(-\sqrt{6\over S_l + S_{l-1}}, \sqrt{6\over S_l + S_{l-1}})$
 
 在LossBase/Euclidean/CrossEntropy.h/cpp 文件定义了损失函数类及其方法，相关代码都定义在 Loss 命名空间内。基类 LossBase 的声明如下。
 
-![img](file:///C:\Users\13357\AppData\Local\Temp\ksohtml9868\wps52.png)
+![img](https://github.com/Kevin-Xu666/BP-Iris-/blob/main/IMG/LossBase%E7%B1%BB%E7%9A%84%E5%A3%B0%E6%98%8E.png)
 
-​                                                 代码 2：LossBase 类的声明
+                                           代码 2：LossBase 类的声明
 
 损失函数为函数类，重载了函数调用运算符，没有成员。
 
@@ -207,9 +205,9 @@ $\theta_{i+1}=\theta_i - v_{i+1}$
 
 BGD 类的声明如下。
 
-![img](file:///C:\Users\13357\AppData\Local\Temp\ksohtml9868\wps72.png)
+![img](https://github.com/Kevin-Xu666/BP-Iris-/blob/main/IMG/BGD%E7%B1%BB%E7%9A%84%E5%A3%B0%E6%98%8E.png)
 
-​                                                   代码 3：BGD 类的声明
+                                           代码 3：BGD 类的声明
 
 成员有网络的引用、损失函数引用、学习率、动量衰减率，以及 old_grad， 也就是各个参数梯度下降的动量。这些参数在构造函数中获得。
 
@@ -221,9 +219,9 @@ zero_grad() 函数顾名思义为清除梯度，负责清理动量 old_grad 和�
 
  与前 2 项类似地，激活函数类也定义了基类 ActBase，以及 2 个具体执行功能 Sigmoid 和 ReLU 类。ActBase 类声明如下。
 
-![img](file:///C:\Users\13357\AppData\Local\Temp\ksohtml9868\wps73.png)
+![img](https://github.com/Kevin-Xu666/BP-Iris-/blob/main/IMG/ActBase%E7%B1%BB%E7%9A%84%E5%A3%B0%E6%98%8E.png)
 
-代码 4：ActBase 类的声明
+                                           代码 4：ActBase 类的声明
 
 激活函数也为函数类，重载了函数调用运算符，没有成员。函数调用运算符的重载，接受 z 向量，返回一个激活的向量。
 
@@ -241,9 +239,9 @@ diff() 函数为激活函数导数的计算。
 
 Net 类作为网络整体的容器，包含了多个全连接层和激活函数。类的声明如下。
 
-![img](file:///C:\Users\13357\AppData\Local\Temp\ksohtml9868\wps74.png)
+![img](https://github.com/Kevin-Xu666/BP-Iris-/blob/main/IMG/Net%E7%B1%BB%E7%9A%84%E5%A3%B0%E6%98%8E.png)
 
-​                                                     代码 5：Net 类的声明
+                                          代码 5：Net 类的声明
 
 成员包含 Linear 层的 vector 容器和激活函数的引用。
 
@@ -257,23 +255,23 @@ forward() 函数顺序调用容器中 Linear 层的 forward() 函数，将前一
 
 ## （一）数据读取与划分
 
-![img](file:///C:\Users\13357\AppData\Local\Temp\ksohtml9868\wps75.png)
+![img](https://github.com/Kevin-Xu666/BP-Iris-/blob/main/IMG/Load_data%20%E5%87%BD%E6%95%B0%E5%A3%B0%E6%98%8E.png)
 
-​                                              代码 6：load_data 函数声明
+                                        代码 6：load_data 函数声明
 
 将每条数据的 4 个特征值放到 4×1 的向量中，然后构造std::vector<std::pair<Martrix<double>,int> 类型的训练集与测试集。构造一个函数load_data()，其声明如上。从字符串指定的文件中（即 iris.data）读取数据，同时记录 4 项特征值各自的最值，读取完毕后进行归一化，将数值范围限制在[0,1]。按照 4:1的比例划分训练集与测试集，存到由形参传入的训练集与测试集的引用中。
 
 ## （二）模型训练
 
-![img](file:///C:\Users\13357\AppData\Local\Temp\ksohtml9868\wps76.png)
+![img](https://github.com/Kevin-Xu666/BP-Iris-/blob/main/IMG/main.cpp%E7%9A%84%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F.png)
 
-​                                                代码 7：main.cpp 的全局变量
+                                         代码 7：main.cpp 的全局变量
 
 在全局变量中，我们以常量定义了网络的输入输出位数、隐藏层宽度、网络层数、和迭代轮数。然后定义了训练集与数据集数组。与 acc 和 loss 有关的是结果数据的记录。最后定义了神经网络的激活函数、网络结构、损失函数和优化器。
 
-![img](file:///C:\Users\13357\AppData\Local\Temp\ksohtml9868\wps77.png)
+![img](https://github.com/Kevin-Xu666/BP-Iris-/blob/main/IMG/main.cpp%E7%9A%84%E4%B8%BB%E5%87%BD%E6%95%B0%E9%83%A8%E5%88%86%E4%BB%A3%E7%A0%81.png)
 
-​                                             代码 8：main.cpp 的主函数部分代码
+                                           代码 8：main.cpp 的主函数部分代码
 
 在主函数中，我们采用如上所示的简单的双循环，外层是训练轮数，内层则顺序输入打乱的训练集数据。对于每个数据点，调用一次 Net 类的前向传播过程、预测结果并保存相关信息，然后调用优化器的 step() 函数进行反向传播、更新网络参数。
 
@@ -283,19 +281,19 @@ forward() 函数顺序调用容器中 Linear 层的 forward() 函数，将前一
 
 在一定的尝试后，我选取了一个表现较好的网络结构：3 层全连接层、隐藏层宽度为4。如下图所示。这样的网络并不深，容易收敛，也不容易出现过拟合以及梯度消失等现象。重要的是，在该网络结构下取得了比较好的准确率。
 
-![img](file:///C:\Users\13357\AppData\Local\Temp\ksohtml9868\wps78.jpg)
+![img](https://github.com/Kevin-Xu666/BP-Iris-/blob/main/IMG/%E9%80%89%E5%AE%9A%E7%9A%84%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.jpg)
 
-​                                                      图 2：选定的网络结构
+                                                图 2：选定的网络结构
 
 在确定网络结构后，我们进行了激活函数、损失函数、学习率等超参数的修改调试，确定了一些选择。激活函数使用 Sigmoid，权重初始化使用对 Sigmoid 友好的 Xavier 初始化。训练轮数选取多数可以实现收敛的 500 轮。下面给出了2 种收敛比较快的结果。
 
 ① 当选择欧氏距离损失函数，学习率 0.02 时，在 300 多轮基本收敛。
 
-![img](file:///C:\Users\13357\AppData\Local\Temp\ksohtml9868\wps79.jpg)
+![img](https://github.com/Kevin-Xu666/BP-Iris-/blob/main/IMG/res1.jpg)
 
-![img](file:///C:\Users\13357\AppData\Local\Temp\ksohtml9868\wps80.jpg) 
+![img](https://github.com/Kevin-Xu666/BP-Iris-/blob/main/IMG/res2.jpg) 
 
-![img](file:///C:\Users\13357\AppData\Local\Temp\ksohtml9868\wps81.jpg)
+![img](https://github.com/Kevin-Xu666/BP-Iris-/blob/main/IMG/res3.jpg)
 
 图 3~5：选择欧氏距离损失函数的收敛情况，从上到下依次为最佳结果、准确率和损失。图像由 MATLAB绘制，下同
 
@@ -303,11 +301,11 @@ forward() 函数顺序调用容器中 Linear 层的 forward() 函数，将前一
 
 ② 当选择交叉熵损失函数，学习率 0.005 时，在 100 多轮就基本收敛。
 
-![img](file:///C:\Users\13357\AppData\Local\Temp\ksohtml9868\wps82.jpg) 
+![img](https://github.com/Kevin-Xu666/BP-Iris-/blob/main/IMG/res4.jpg) 
 
-![img](file:///C:\Users\13357\AppData\Local\Temp\ksohtml9868\wps83.jpg) 
+![img](https://github.com/Kevin-Xu666/BP-Iris-/blob/main/IMG/res5.jpg) 
 
-![img](file:///C:\Users\13357\AppData\Local\Temp\ksohtml9868\wps84.jpg) 
+![img](https://github.com/Kevin-Xu666/BP-Iris-/blob/main/IMG/res6.jpg) 
 
 图 6~8：选择交叉熵损失函数的收敛情况，从上到下依次为最佳结果、准确率和损失
 
